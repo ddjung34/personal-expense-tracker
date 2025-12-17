@@ -1,0 +1,43 @@
+# Google Sheets Credentials (IMPORTANT!)
+service_account.json
+*.json
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+.venv/
+ENV/
+
+# Excel Files (Local Backup Only)
+*.xlsx
+*.xls
+01.Document/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Streamlit
+.streamlit/secrets.toml
+
+# Test/Debug Scripts
+*_test.py
+*_tester.py
+debug_*.py
+dump_*.py
+verify_*.py
+restore_*.py
+check_*.py
+gsheet_status.txt
