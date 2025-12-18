@@ -42,7 +42,9 @@ def get_data_cached():
 
 # Use session state for working copy (draft mode)
 if 'working_df' not in st.session_state or st.session_state.get('reload_data', False):
-    st.session_state.working_df = get_data_cached().copy()
+    loaded_df = get_data_cached()
+    st.write(f"🔍 DEBUG: Loaded {len(loaded_df)} rows, Columns: {list(loaded_df.columns)}")
+    st.session_state.working_df = loaded_df.copy()
     st.session_state.reload_data = False
 
 df = st.session_state.working_df
