@@ -57,41 +57,27 @@ def load_data():
     """
     Loads data from Google Sheet.
     """
-    print("=== LOAD DATA DEBUG ===")
     client = connect_gsheet()
     if not client:
-        print("❌ ERROR: Failed to connect to Google Sheets")
         return pd.DataFrame()
-    
-    print("✅ Connected to Google Sheets")
 
     try:
         # Open Spreadsheet
-        print(f"📂 Opening spreadsheet: {GSHEET_NAME}")
         sh = client.open(GSHEET_NAME)
-        print(f"✅ Spreadsheet opened successfully")
         
         # Open Worksheet (Try 'T_RawData', else 'Sheet1', else First)
         try:
-            print(f"📋 Trying to open worksheet: {WORKSHEET_NAME}")
             ws = sh.worksheet(WORKSHEET_NAME)
-            print(f"✅ Worksheet '{WORKSHEET_NAME}' opened")
-        except Exception as e:
-            print(f"⚠️ Failed to open '{WORKSHEET_NAME}': {e}")
+        except:
             try:
                 ws = sh.worksheet('Sheet1')
-                print(f"✅ Opened 'Sheet1' as fallback")
             except:
                 ws = sh.get_worksheet(0)
-                print(f"✅ Opened first worksheet as fallback")
                   
         # Robust Read: Use get_all_values to avoid header errors
-        print("📖 Reading all values from worksheet...")
         rows = ws.get_all_values()
-        print(f"✅ Read {len(rows)} total rows")
         
         if not rows or len(rows) < 2:
-            print("⚠️ WARNING: No data rows found (less than 2 rows)")
             return pd.DataFrame(columns=['날짜', '시간', '구분', '대분류', '소분류', '내용', '금액', '결제수단', '메모', 'Flow_Filter', 'Is_Active'])
               
         # ENFORCE SCHEMA (Hardcoded)
@@ -99,12 +85,10 @@ def load_data():
         # If Row 0 has '날짜', but others are empty, it's the header row but broken.
         # Let's assume standard structure if '날짜' is in 1st col.
         
-        print("🔍 Looking for header row...")
         header_row_idx = 0
         for i, r in enumerate(rows[:5]):
              if '날짜' in str(r[0]) or 'Date' in str(r[0]):
                  header_row_idx = i
-                 print(f"✅ Found header at row {i}: {r[:3]}")
                  break
                  
         # Skip header row and load data
